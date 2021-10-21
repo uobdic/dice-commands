@@ -3,6 +3,7 @@ import logging
 
 from ..logger import admin_logger
 from . import _scan_groups_and_users
+from . import _print_used_id_ranges
 
 @click.group()
 @click.option('--debug/-d', is_flag=True)
@@ -30,3 +31,9 @@ def create_user(ctx):
 @dice_admin.command()
 def scan_groups_and_users():
     _scan_groups_and_users.main()
+
+@dice_admin.command()
+@click.argument("user_file")
+@click.argument("group_file")
+def print_used_id_ranges(user_file, group_file):
+    _print_used_id_ranges.main(user_file, group_file)
