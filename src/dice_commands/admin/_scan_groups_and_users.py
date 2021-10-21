@@ -1,6 +1,5 @@
-import csv
-
 from ..logger import admin_logger
+from ..io import write_list_data_as_dict_to_csv
 from ..utils import current_fqdn
 
 
@@ -24,19 +23,12 @@ def _read_users() -> list:
     return users
 
 
-def _write_csv_data(data: list, output_file: str, fieldnames: list) -> None:
-    with open(output_file, "w") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
-        writer.writeheader()
-        writer.writerows(data)
-
-
 def _write_users_to_csv(users: list, output_file: str = "/tmp/users.csv"):
-    _write_csv_data(users, output_file, ["name", "uid", "gid"])
+    write_list_data_as_dict_to_csv(users, output_file, ["name", "uid", "gid"])
 
 
 def _write_groups_to_csv(groups, output_file="/tmp/groups.csv"):
-    _write_csv_data(groups, output_file, ["name", "gid"])
+    write_list_data_as_dict_to_csv(groups, output_file, ["name", "gid"])
 
 
 def main():
