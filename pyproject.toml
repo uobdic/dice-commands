@@ -90,6 +90,7 @@ strict_equality = true
 
 
 [project.scripts]
+dice = "dice_commands.user:dice_user"
 dice_admin = "dice_commands.admin:dice_admin"
 dice_benchmark = "dice_commands.benchmark:dice_benchmark"
-dice = "dice_commands.user:dice_user"
+dice_job = "dice_commands.job:dice_job"
