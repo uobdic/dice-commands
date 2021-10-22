@@ -11,9 +11,9 @@ from typing import List
 
 # -- Project information -----------------------------------------------------
 
-project = "dice-commands"
+project = "DICE Command Line Interface"
 copyright = "2021, The UoB DICE team"
-author = "Luke Kreczko"
+author = "The UoB DICE team"
 
 
 # -- General configuration ---------------------------------------------------
@@ -47,11 +47,11 @@ html_theme = "sphinx_book_theme"
 
 html_title = f"{project}"
 
-html_baseurl = "https://dice_commands.readthedocs.io/en/latest/"
+html_baseurl = "https://dice-cli.readthedocs.io/en/latest/"
 
 html_theme_options = {
     "home_page_in_toc": True,
-    "repository_url": "https://github.com/uobdic/dice-commands",
+    "repository_url": "https://github.com/uobdic/dice-cli",
     "use_repository_button": True,
     "use_issues_button": True,
     "use_edit_page_button": True,

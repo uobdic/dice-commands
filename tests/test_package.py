@@ -1,4 +1,4 @@
-import dice_commands as m
+import dice_cli as m
 
 
 def test_version():
