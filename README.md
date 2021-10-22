@@ -5,21 +5,12 @@
 [![Code style: black][black-badge]][black-link]
 
 [![PyPI version][pypi-version]][pypi-link]
-[![Conda-Forge][conda-badge]][conda-link]
 [![PyPI platforms][pypi-platforms]][pypi-link]
-
-[![GitHub Discussion][github-discussions-badge]][github-discussions-link]
-[![Gitter][gitter-badge]][gitter-link]
-
 
 [actions-badge]:            https://github.com/uobdic/dice-cli/workflows/CI/badge.svg
 [actions-link]:             https://github.com/uobdic/dice-cli/actions
 [black-badge]:              https://img.shields.io/badge/code%20style-black-000000.svg
 [black-link]:               https://github.com/psf/black
-[github-discussions-badge]: https://img.shields.io/static/v1?label=Discussions&message=Ask&color=blue&logo=github
-[github-discussions-link]:  https://github.com/uobdic/dice-cli/discussions
-[gitter-badge]:             https://badges.gitter.im/https://github.com/uobdic/dice-cli/community.svg
-[gitter-link]:              https://gitter.im/https://github.com/uobdic/dice-cli/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
 [pypi-link]:                https://pypi.org/project/dice-cli/
 [pypi-platforms]:           https://img.shields.io/pypi/pyversions/dice-cli
 [pypi-version]:             https://badge.fury.io/py/dice-cli.svg
