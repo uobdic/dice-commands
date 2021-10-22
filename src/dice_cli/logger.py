@@ -1,51 +1,31 @@
 import logging
+from typing import Dict
 
 from rich.logging import RichHandler
 
 from .utils import current_date, current_linux_user
 
 
-class VariableFormatter(logging.Formatter):
+class LevelFormatter(logging.Formatter):
     """
-    From https://stackoverflow.com/q/14844970
-    Formatter that allows for different formatting of the message
-    depending on the log level.
+    From https://stackoverflow.com/a/28636024/362457
     """
 
-    err_fmt = "%(levelname)s: %(message)s"
-    warn_fmt = "%(levelname)s: %(message)s"
-    info_fmt = "%(message)s"
-    dbg_fmt = "%(asctime)s [%(name)s]  %(levelname)s: %(message)s"
+    def __init__(self, fmt: str, datefmt: str, level_fmts: Dict):
+        self._level_formatters = {}
+        for level, format in level_fmts.items():
+            # Could optionally support level names too
+            self._level_formatters[level] = logging.Formatter(
+                fmt=format, datefmt=datefmt
+            )
+        # self._fmt will be the default format
+        super().__init__(fmt=fmt, datefmt=datefmt)
 
-    def __init__(self, fmt: str = "%(levelno)s: %(msg)s") -> None:
-        super().__init__(fmt=fmt, datefmt=None, style="%")
+    def format(self, record):
+        if record.levelno in self._level_formatters:
+            return self._level_formatters[record.levelno].format(record)
 
-    def format(self, record: logging.LogRecord) -> str:
-
-        # Save the original format configured by the user
-        # when the logger formatter was instantiated
-        format_orig = self._style._fmt
-
-        # Replace the original format with one customized by logging level
-        if record.levelno == logging.DEBUG:
-            self._style._fmt = VariableFormatter.dbg_fmt
-
-        elif record.levelno == logging.INFO:
-            self._style._fmt = VariableFormatter.info_fmt
-
-        elif record.levelno == logging.ERROR:
-            self._style._fmt = VariableFormatter.err_fmt
-
-        elif record.levelno == logging.WARNING:
-            self._style._fmt = VariableFormatter.warn_fmt
-
-        # Call the original formatter class to do the grunt work
-        result = logging.Formatter.format(self, record)
-
-        # Restore the original format configured by the user
-        self._style._fmt = format_orig
-
-        return result
+        return super().format(record)
 
 
 admin_logger = logging.getLogger("dice_admin")
@@ -54,10 +34,24 @@ admin_logger.setLevel(logging.INFO)
 user_logger = logging.getLogger("dice_user")
 user_logger.setLevel(logging.INFO)
 
-console_formatter = VariableFormatter()
-console_handler = RichHandler(rich_tracebacks=True, markup=True)
+console_formatter = LevelFormatter(
+    fmt="%(asctime)s [%(name)s]  %(levelname)s: %(message)s",
+    datefmt="[%Y-%m-%d %H:%M:%S]",
+    level_fmts={
+        logging.INFO: "%(message)s",
+        logging.WARNING: "%(levelname)s: %(message)s",
+        logging.ERROR: "%(levelname)s: %(message)s",
+    },
+)
+console_handler = RichHandler(
+    # rich_tracebacks=True, # does not work with custom formatters
+    markup=True,
+    show_level=False,
+    show_time=False,
+)
 console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(console_formatter)
+console_handler.formatter = console_formatter
 
 logfile_formatter = logging.Formatter(
     "%(asctime)s [%(name)s]  %(levelname)s: %(message)s"

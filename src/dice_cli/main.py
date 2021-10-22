@@ -5,7 +5,7 @@ import rich
 import typer
 
 from . import __version__, admin, benchmark, docs, job
-from .logger import admin_logger, user_logger
+from .logger import admin_logger, console_handler, user_logger
 
 
 def user_callback(
@@ -18,6 +18,8 @@ def user_callback(
 
     if debug:
         user_logger.setLevel(logging.DEBUG)
+        # workaround for rich
+        console_handler.setLevel(logging.DEBUG)
 
 
 def admin_callback(
@@ -30,6 +32,8 @@ def admin_callback(
 
     if debug:
         admin_logger.setLevel(logging.DEBUG)
+        # workaround for rich
+        console_handler.setLevel(logging.DEBUG)
 
 
 app = typer.Typer()
