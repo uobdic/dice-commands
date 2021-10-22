@@ -1,9 +1,11 @@
+from typing import Dict, List
+
+from .._io import write_list_data_as_dict_to_csv
 from ..logger import admin_logger
-from ..io import write_list_data_as_dict_to_csv
 from ..utils import current_fqdn
 
 
-def _read_groups() -> list:
+def _read_groups() -> List[Dict[str, str]]:
     with open("/etc/group") as f:
         group_lines = f.readlines()
     groups = []
@@ -13,7 +15,7 @@ def _read_groups() -> list:
     return groups
 
 
-def _read_users() -> list:
+def _read_users() -> List[Dict[str, str]]:
     with open("/etc/passwd") as f:
         user_lines = f.readlines()
     users = []
@@ -23,15 +25,15 @@ def _read_users() -> list:
     return users
 
 
-def _write_users_to_csv(users: list, output_file: str = "/tmp/users.csv"):
+def _write_users_to_csv(users: list, output_file: str = "/tmp/users.csv") -> None:
     write_list_data_as_dict_to_csv(users, output_file, ["name", "uid", "gid"])
 
 
-def _write_groups_to_csv(groups, output_file="/tmp/groups.csv"):
+def _write_groups_to_csv(groups, output_file="/tmp/groups.csv") -> None:
     write_list_data_as_dict_to_csv(groups, output_file, ["name", "gid"])
 
 
-def main():
+def main() -> None:
     groups = _read_groups()
     users = _read_users()
     hostname = current_fqdn()

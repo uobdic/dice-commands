@@ -1,13 +1,13 @@
 import logging
 
-from .utils import current_linux_user, current_date
+from .utils import current_date, current_linux_user
 
 
 class VariableFormatter(logging.Formatter):
     """
-        From https://stackoverflow.com/q/14844970
-        Formatter that allows for different formatting of the message
-        depending on the log level.
+    From https://stackoverflow.com/q/14844970
+    Formatter that allows for different formatting of the message
+    depending on the log level.
     """
 
     err_fmt = "%(levelname)s: %(message)s"
@@ -15,10 +15,10 @@ class VariableFormatter(logging.Formatter):
     info_fmt = "%(message)s"
     dbg_fmt = "%(asctime)s [%(name)s]  %(levelname)s: %(message)s"
 
-    def __init__(self, fmt="%(levelno)s: %(msg)s"):
+    def __init__(self, fmt: str = "%(levelno)s: %(msg)s") -> None:
         super().__init__(fmt=fmt, datefmt=None, style="%")
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
 
         # Save the original format configured by the user
         # when the logger formatter was instantiated
@@ -57,8 +57,12 @@ console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(console_formatter)
 
-logfile_formatter = logging.Formatter("%(asctime)s [%(name)s]  %(levelname)s: %(message)s")
-logfile_handler = logging.FileHandler(f"/tmp/dice_commands_{current_linux_user()}_{current_date()}.log")
+logfile_formatter = logging.Formatter(
+    "%(asctime)s [%(name)s]  %(levelname)s: %(message)s"
+)
+logfile_handler = logging.FileHandler(
+    f"/tmp/dice_commands_{current_linux_user()}_{current_date()}.log"
+)
 logfile_handler.setLevel(logging.DEBUG)
 logfile_handler.setFormatter(logfile_formatter)
 
