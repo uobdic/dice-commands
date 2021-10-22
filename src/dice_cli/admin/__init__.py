@@ -1,7 +1,6 @@
 import typer
 
-from . import (_print_unused_id_ranges, _print_used_id_ranges,
-               _scan_groups_and_users)
+from . import _print_unused_id_ranges, _print_used_id_ranges, _scan_groups_and_users
 
 app = typer.Typer(help="DICE admin commands")
 
