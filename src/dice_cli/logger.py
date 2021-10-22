@@ -1,5 +1,7 @@
 import logging
 
+from rich.logging import RichHandler
+
 from .utils import current_date, current_linux_user
 
 
@@ -53,7 +55,7 @@ user_logger = logging.getLogger("dice_user")
 user_logger.setLevel(logging.INFO)
 
 console_formatter = VariableFormatter()
-console_handler = logging.StreamHandler()
+console_handler = RichHandler(rich_tracebacks=True, markup=True)
 console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(console_formatter)
 

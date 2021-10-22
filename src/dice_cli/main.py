@@ -43,7 +43,8 @@ def version() -> None:
     """
     Show version
     """
-    typer.echo(f"DICE CLI Version: {__version__}")
+    import rich
+    rich.print(f"[blue]DICE CLI Version[/]: [magenta]{__version__}[/]")
 
 
 def main() -> Any:
