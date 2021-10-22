@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions/setup-python@v2
       with:
-        python-version: "3.9"
+        python-version: "3.9" # some pre-commit hooks require Python <3.10
     - uses: pre-commit/action@v2.0.3
       with:
         extra_args: --hook-stage manual --all-files
