@@ -39,8 +39,10 @@ console_formatter = LevelFormatter(
     datefmt="[%Y-%m-%d %H:%M:%S]",
     level_fmts={
         logging.INFO: "%(message)s",
-        logging.WARNING: "%(levelname)s: %(message)s",
-        logging.ERROR: "%(levelname)s: %(message)s",
+        logging.WARNING: "[bold dark_orange]%(levelname)s[/]: %(message)s",
+        logging.ERROR: "[bold red]%(levelname)s[/]: %(message)s",
+        logging.DEBUG: "[bold hot_pink]%(levelname)s[/]: %(message)s",
+        logging.CRITICAL: "[bold blink bright_red]%(levelname)s[/]: %(message)s",
     },
 )
 console_handler = RichHandler(
@@ -48,6 +50,7 @@ console_handler = RichHandler(
     markup=True,
     show_level=False,
     show_time=False,
+    show_path=False,
 )
 console_handler.setLevel(logging.INFO)
 console_handler.setFormatter(console_formatter)
