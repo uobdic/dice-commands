@@ -1,19 +1,16 @@
 import logging
-from subprocess import call
-from typing import Any
+from typing import Any, Optional
+
 import typer
 
-from . import admin
-from . import benchmark
-from . import docs
-from . import job
-from .logger import user_logger, admin_logger
+from . import __version__, admin, benchmark, docs, job
+from .logger import admin_logger, user_logger
 
 
 def user_callback(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
     debug: bool = typer.Option(False, "--debug", "-d", help="Debug output"),
-):
+) -> Any:
     # verbose is debug
     verbose = debug or verbose
     debug = verbose
@@ -25,7 +22,7 @@ def user_callback(
 def admin_callback(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Verbose output"),
     debug: bool = typer.Option(False, "--debug", "-d", help="Debug output"),
-):
+) -> Any:
     # verbose is debug
     verbose = debug or verbose
     debug = verbose
@@ -39,6 +36,14 @@ app.add_typer(admin.app, name="admin", callback=admin_callback)
 app.add_typer(benchmark.app, name="benchmark", callback=user_callback)
 app.add_typer(docs.app, name="docs", callback=user_callback)
 app.add_typer(job.app, name="job", callback=user_callback)
+
+
+@app.command()
+def version() -> None:
+    """
+    Show version
+    """
+    typer.echo(f"DICE CLI Version: {__version__}")
 
 
 def main() -> Any:

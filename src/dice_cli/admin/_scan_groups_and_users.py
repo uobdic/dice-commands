@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
 from .._io import write_list_data_as_dict_to_csv
 from ..logger import admin_logger
@@ -10,8 +10,8 @@ def _read_groups() -> List[Dict[str, str]]:
         group_lines = f.readlines()
     groups = []
     for line in group_lines:
-        line = line.split(":")
-        groups.append({"name": line[0], "gid": line[2]})
+        tokens = line.split(":")
+        groups.append({"name": tokens[0], "gid": tokens[2]})
     return groups
 
 
@@ -20,16 +20,21 @@ def _read_users() -> List[Dict[str, str]]:
         user_lines = f.readlines()
     users = []
     for line in user_lines:
-        line = line.split(":")
-        users.append({"name": line[0], "uid": line[2], "gid": line[3]})
+        tokens = line.split(":")
+        users.append({"name": tokens[0], "uid": tokens[2], "gid": tokens[3]})
     return users
 
 
-def _write_users_to_csv(users: list, output_file: str = "/tmp/users.csv") -> None:
+def _write_users_to_csv(
+    users: List[Dict[str, Any]],
+    output_file: str = "/tmp/users.csv",
+) -> None:
     write_list_data_as_dict_to_csv(users, output_file, ["name", "uid", "gid"])
 
 
-def _write_groups_to_csv(groups, output_file="/tmp/groups.csv") -> None:
+def _write_groups_to_csv(
+    groups: List[Dict[str, Any]], output_file: str = "/tmp/groups.csv"
+) -> None:
     write_list_data_as_dict_to_csv(groups, output_file, ["name", "gid"])
 
 

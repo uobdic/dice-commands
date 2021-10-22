@@ -1,5 +1,5 @@
 from itertools import count
-from typing import Iterable, cast
+from typing import Iterable, Iterator
 
 
 def current_linux_user() -> str:
@@ -27,16 +27,16 @@ def as_range(iterable: Iterable[int]) -> str:
     """From https://codereview.stackexchange.com/q/5196
     If {iterable} has at least two elements, return '{first}-{last}', otherwise '{first}'.
     """
-    l = list(iterable)
-    if len(l) > 1:
-        return f"{l[0]}-{l[-1]}"
+    items = list(iterable)
+    if len(items) > 1:
+        return f"{items[0]}-{items[-1]}"
     else:
-        return f"{l[0]}"
+        return f"{items[0]}"
 
 
-def groupby_range(x: int, c: Iterable[int] = count()) -> int:
-    return cast(int, next(c) - x)
+def groupby_range(x: int, c: Iterator[int] = count()) -> int:
+    return next(c) - x
 
 
-def groupby_inverse_range(x: int, c: Iterable[int] = count()) -> int:
-    return cast(int, x - next(c))
+def groupby_inverse_range(x: int, c: Iterator[int] = count()) -> int:
+    return x - next(c)

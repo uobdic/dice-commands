@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 
 [project]
-name = "dice_commands"
+name = "dice_cli"
 authors = [
   { name = "Luke Kreczko", email = "kreczko@cern.ch" },
 ]
@@ -13,7 +13,7 @@ maintainers = [
 ]
 license = { file = "LICENSE" }
 
-description = "COmmand suite for DICE"
+description = "Command-line interface for DICE"
 readme = "README.md"
 
 requires-python = ">=3.6"
@@ -59,7 +59,7 @@ docs = [
 ]
 
 [project.urls]
-homepage = "https://github.com/uobdic/dice-commands"
+homepage = "https://github.com/uobdic/dice-cli"
 
 
 [tool.pytest.ini_options]
@@ -93,4 +93,4 @@ strict_equality = true
 
 
 [project.scripts]
-dice = "dice_commands.dice:main"
+dice = "dice_cli.main:main"
