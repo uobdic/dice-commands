@@ -1,6 +1,7 @@
 import logging
 from typing import Any
 
+import rich
 import typer
 
 from . import __version__, admin, benchmark, docs, job
@@ -43,7 +44,6 @@ def version() -> None:
     """
     Show version
     """
-    import rich
     rich.print(f"[blue]DICE CLI Version[/]: [magenta]{__version__}[/]")
 
 
