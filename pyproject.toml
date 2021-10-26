@@ -39,6 +39,7 @@ classifiers = [
 dynamic = ["version"]
 dependencies = [
   "colorama >=0.4.0",
+  "dice-lib >=0.1.0",
   "typer >=0.4.0",
   "typing_extensions >=3.7",
   "rich >=10.12.0",
