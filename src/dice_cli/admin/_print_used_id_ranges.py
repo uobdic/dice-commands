@@ -1,9 +1,10 @@
 from itertools import groupby
 from typing import List
 
+from dice_lib.ranges import as_range, groupby_range
+
 from .._io import read_ints_from_csv
 from ..logger import admin_logger
-from ..utils import as_range, groupby_range
 
 
 def _read_userids(filename: str) -> List[int]:

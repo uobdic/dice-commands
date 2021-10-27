@@ -1,9 +1,13 @@
 import logging
 from typing import Dict
 
+from dice_lib.date import (
+    DEFAULT_DATE_FORMAT,
+    DEFAULT_TIME_FORMAT,
+    current_formatted_date,
+)
+from dice_lib.user import current_user
 from rich.logging import RichHandler
-
-from .utils import current_date, current_linux_user
 
 
 class LevelFormatter(logging.Formatter):
@@ -36,7 +40,7 @@ user_logger.setLevel(logging.INFO)
 
 console_formatter = LevelFormatter(
     fmt="%(asctime)s [%(name)s]  %(levelname)s: %(message)s",
-    datefmt="[%Y-%m-%d %H:%M:%S]",
+    datefmt=f"[{DEFAULT_DATE_FORMAT} {DEFAULT_TIME_FORMAT}]",
     level_fmts={
         logging.INFO: "%(message)s",
         logging.WARNING: "[bold dark_orange]%(levelname)s[/]: %(message)s",
@@ -60,7 +64,7 @@ logfile_formatter = logging.Formatter(
     "%(asctime)s [%(name)s]  %(levelname)s: %(message)s"
 )
 logfile_handler = logging.FileHandler(
-    f"/tmp/dice_commands_{current_linux_user()}_{current_date()}.log"
+    f"/tmp/dice_commands_{current_user()}_{current_formatted_date()}.log"
 )
 logfile_handler.setLevel(logging.DEBUG)
 logfile_handler.setFormatter(logfile_formatter)

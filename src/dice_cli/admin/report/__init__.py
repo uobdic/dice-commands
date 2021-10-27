@@ -3,9 +3,9 @@ from pathlib import Path
 from typing import List, Optional
 
 import typer
+from dice_lib.units import convert_to_largest_unit
 
 from dice_cli.logger import admin_logger
-from dice_cli.utils import convert_to_largest_unit
 
 app = typer.Typer(help="Commands for report creation")
 

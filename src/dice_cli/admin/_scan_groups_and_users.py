@@ -1,8 +1,9 @@
 from typing import Any, Dict, List
 
+from dice_lib.host import current_fqdn
+
 from .._io import write_list_data_as_dict_to_csv
 from ..logger import admin_logger
-from ..utils import current_fqdn
 
 
 def _read_groups() -> List[Dict[str, str]]:
