@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Any, Dict, List
 
 from dice_lib.host import current_fqdn
@@ -30,13 +31,13 @@ def _write_users_to_csv(
     users: List[Dict[str, Any]],
     output_file: str = "/tmp/users.csv",
 ) -> None:
-    write_list_data_as_dict_to_csv(users, ["name", "uid", "gid"], output_file)
+    write_list_data_as_dict_to_csv(users, ["name", "uid", "gid"], Path(output_file))
 
 
 def _write_groups_to_csv(
     groups: List[Dict[str, Any]], output_file: str = "/tmp/groups.csv"
 ) -> None:
-    write_list_data_as_dict_to_csv(groups, ["name", "gid"], output_file)
+    write_list_data_as_dict_to_csv(groups, ["name", "gid"], Path(output_file))
 
 
 def main() -> None:

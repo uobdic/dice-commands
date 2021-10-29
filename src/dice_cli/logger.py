@@ -15,7 +15,7 @@ class LevelFormatter(logging.Formatter):
     From https://stackoverflow.com/a/28636024/362457
     """
 
-    def __init__(self, fmt: str, datefmt: str, level_fmts: Dict):
+    def __init__(self, fmt: str, datefmt: str, level_fmts: Dict[int, str]):
         self._level_formatters = {}
         for level, format in level_fmts.items():
             # Could optionally support level names too
@@ -25,7 +25,7 @@ class LevelFormatter(logging.Formatter):
         # self._fmt will be the default format
         super().__init__(fmt=fmt, datefmt=datefmt)
 
-    def format(self, record):
+    def format(self, record: logging.LogRecord) -> str:
         if record.levelno in self._level_formatters:
             return self._level_formatters[record.levelno].format(record)
 

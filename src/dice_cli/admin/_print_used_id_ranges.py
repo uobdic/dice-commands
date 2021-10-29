@@ -1,4 +1,5 @@
 from itertools import groupby
+from pathlib import Path
 from typing import List
 
 from dice_lib.ranges import as_range, groupby_range
@@ -8,11 +9,11 @@ from ..logger import admin_logger
 
 
 def _read_userids(filename: str) -> List[int]:
-    return read_ints_from_csv(filename, "uid")
+    return read_ints_from_csv(Path(filename), "uid")
 
 
 def _read_groupids(filename: str) -> List[int]:
-    return read_ints_from_csv(filename, "gid")
+    return read_ints_from_csv(Path(filename), "gid")
 
 
 def main(users_file: str, group_file: str) -> None:
