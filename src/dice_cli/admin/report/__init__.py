@@ -4,6 +4,7 @@ from typing import List, Optional
 import typer
 from dice_lib.date import current_formatted_date
 
+from dice_cli._io import write_list_data_to_csv
 from dice_cli.logger import admin_logger
 
 from ._storage import generate_storage_report
@@ -33,6 +34,7 @@ def storage(
         today = current_formatted_date()
         output_directory = Path(f"/tmp/{today}_dice_admin_storage_report.csv")
 
-    generate_storage_report(paths, output_directory, resolve_usernames)
+    headers, report = generate_storage_report(paths, resolve_usernames)
+    write_list_data_to_csv(report, headers, output_directory)
 
     admin_logger.info(f"Report saved to {output_directory}")
