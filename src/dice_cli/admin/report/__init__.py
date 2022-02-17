@@ -68,3 +68,31 @@ def consistency_check_grid(
     :param output_file: The file to write the report to.
     """
     admin_logger.warning(":construction: Work in progress :construction:")
+
+@app.command()
+def network(
+    ip_network: str = typer.Argument(...),
+    output_file: Optional[Path] = typer.Option(
+        None,
+        "-o",
+        "--output",
+        help="Output file",
+    ),
+    print_to_console: bool = typer.Option(
+        False, "--print", help="Print to console instead of output file"
+    ),
+) -> None:
+    """
+    Generate a report of the devices connected to the specified network.
+
+    :param ip_network: The network to generate the report for, e.g. 10.129.5.0/24
+    :param output_directory: The directory to write the report to.
+    """
+    if not output_file and not print_to_console:
+        today = current_formatted_date()
+        output_file = Path(f"/tmp/{today}_dice_admin_network_report.csv")
+
+    admin_logger.warning(":construction: Work in progress :construction:")
+    from ._network import _scan_network
+    all_hosts = _scan_network(ip_network)
+    admin_logger.info(f"Found {len(all_hosts)} hosts")
