@@ -1,9 +1,6 @@
-import ipaddress
+from typing import Any
 
 import nmap
-
-from dice_cli.admin.report import network
-
 
 # def __scan_ip(ip_address: str) -> None:
 #     # ip = ipaddress.ip_address(ip_address)
@@ -17,15 +14,16 @@ from dice_cli.admin.report import network
 #     print(answered_list.summary())
 
 
-def _scan_network(ip_network: str) -> None:
+def _scan_network(ip_network: str) -> Any:
 
     nm = nmap.PortScanner()
     nm.scan(hosts=ip_network, arguments="-sP")
     all_hosts = nm.all_hosts()
-    all_ips = [ipaddress.ip_address(h) for h in all_hosts]
-    #TODO: add DHCP discovery to list "down" IPs
-    for host in sorted(all_ips):
-        print(nm[str(host)])
-        # print(host, nm[str(host)]['status']['state'])
+    # all_ips = [ipaddress.ip_address(h) for h in all_hosts]
+    # TODO: add DHCP discovery to list "down" IPs
+    # or use dnspython
+    # for host in sorted(all_ips):
+    #     print(nm[str(host)])
+    # print(host, nm[str(host)]['status']['state'])
 
     return all_hosts

@@ -12,6 +12,12 @@ from ._storage import generate_storage_report
 
 app = typer.Typer(help="Commands for report creation")
 
+# U = TypeVar("U")
+# def optional_to_strict(optional: Optional[U]) -> U:
+#     if optional is None:
+#         raise ValueError("Value is None")
+#     return cast(U, optional)
+
 
 @app.command()
 def storage(
@@ -46,7 +52,7 @@ def storage(
         admin_logger.info(tabulate(report, headers=headers, tablefmt="psql"))
 
     headers, report = generate_storage_report(paths, resolve_usernames)
-    write_list_data_to_csv(report, headers, output_directory)
+    write_list_data_to_csv(report, headers, cast(Path, output_file))
 
 
 @app.command()
@@ -68,6 +74,7 @@ def consistency_check_grid(
     :param output_file: The file to write the report to.
     """
     admin_logger.warning(":construction: Work in progress :construction:")
+
 
 @app.command()
 def network(
@@ -94,5 +101,6 @@ def network(
 
     admin_logger.warning(":construction: Work in progress :construction:")
     from ._network import _scan_network
+
     all_hosts = _scan_network(ip_network)
     admin_logger.info(f"Found {len(all_hosts)} hosts")
