@@ -2,8 +2,6 @@ from itertools import groupby
 from pathlib import Path
 from typing import List
 
-from dice_lib.ranges import as_range, groupby_range
-
 from .._io import read_ints_from_csv
 from ..logger import admin_logger
 
@@ -20,6 +18,8 @@ def main(users_file: str, group_file: str) -> None:
     """
     Prints the used ID ranges for all groups and users.
     """
+    from dice_lib.ranges import as_range, groupby_range
+
     userids = _read_userids(users_file)
     groupids = _read_groupids(group_file)
 

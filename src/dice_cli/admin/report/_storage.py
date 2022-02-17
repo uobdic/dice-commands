@@ -1,11 +1,11 @@
 from pathlib import Path
 from typing import Any, List, Tuple
 
-from dice_lib.fs import get_owner, size_of_paths
-from dice_lib.user import get_user_full_name
-
 
 def _resolve_usernames_in_report(report: List[Any]) -> List[Any]:
+    from dice_lib.fs import get_owner
+    from dice_lib.user import get_user_full_name
+
     new_report = []
     for row in report:
         path = row[0]
@@ -25,6 +25,8 @@ def generate_storage_report(
     :param resolve_usernames: Whether to resolve usernames to full names.
     :return: Tuple of (headers, report)
     """
+    from dice_lib.fs import size_of_paths
+
     headers = ["Path", "Size [B]", "Size [human-readable]", "Unit [human-readable]"]
     report = size_of_paths(paths)
     if resolve_usernames:

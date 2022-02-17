@@ -1,8 +1,6 @@
 from pathlib import Path
 from typing import Any, Dict, List
 
-from dice_lib.host import current_fqdn
-
 from .._io import write_list_data_as_dict_to_csv
 from ..logger import admin_logger
 
@@ -41,6 +39,8 @@ def _write_groups_to_csv(
 
 
 def main() -> None:
+    from dice_lib.host import current_fqdn
+
     groups = _read_groups()
     users = _read_users()
     hostname = current_fqdn()
