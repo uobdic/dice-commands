@@ -39,3 +39,57 @@ Should you be using a "non-standard" shell, you can check what will be installed
 ```bash
 dice --show-completion
 ```
+
+
+## Development
+
+### Development cycle
+
+`dice-cli` has a direct, tight dependency on [dice-lib](https://github.com/uobdic/dice-lib).
+New features are usually developed within `dice-cli` first, and then common functionality is moved to `dice-lib`.
+
+### Code layout
+
+CLI commands are currently grouped into two categories: `admin` and `user`.
+All categories, except for `user` need to be placed in their respective folders.
+Each category should use its own logging and error handling to allow for individual tuning.
+
+Main commands are implemented directly into `<category>/__init__.py`, e.g. `dice admin scan_groups_and_users`, while subcommands should be placed in `<category>/<command>/__init__.py`, e.g. `dice job why_is_my_job_not_running`.
+
+Should a command require extensive logic, it should be placed in its own file , e.g. `admin/_print_used_id_ranges.py`. This will be the main point of change when things move to `dice-lib`.
+
+Snapshot (2022.02.17):
+
+```bash
+src/dice_cli/
+├── __init__.py
+├── _io
+│   ├── __init__.py
+│   └── _csv.py
+├── admin # `dice admin` category
+│   ├── __init__.py
+│   ├── _print_unused_id_ranges.py # main command functionality for `dice admin print_unused_id_ranges`
+│   ├── _print_used_id_ranges.py
+│   ├── _scan_groups_and_users.py
+│   └── report # all `dice admin report` commands
+│       ├── __init__.py
+│       ├── __pycache__
+│       ├── _consistency_check_grid.py
+│       ├── _inventory.py
+│       ├── _network.py
+│       └── _storage.py
+├── benchmark
+│   ├── __init__.py
+├── docs
+│   ├── __init__.py
+├── fs # user command example: `dice fs`
+│   ├── __init__.py
+│   └── _copy_from_local.py
+├── info
+│   ├── __init__.py
+├── job
+│   ├── __init__.py
+├── logger.py
+├── main.py
+└── py.typed
+```
