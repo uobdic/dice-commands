@@ -93,3 +93,14 @@ src/dice_cli/
 ├── main.py
 └── py.typed
 ```
+
+### Local installation
+
+```bash
+conda create -n dice python=3.8
+conda activate dice
+# make sure to have the latst pip
+pip install -U pip
+# install dice-cli
+pip install -e .
+```
