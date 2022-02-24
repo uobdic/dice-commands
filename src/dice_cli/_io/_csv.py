@@ -31,3 +31,10 @@ def write_list_data_to_csv(
         writer = csv.writer(f)
         writer.writerow(fieldnames)
         writer.writerows(data)
+
+
+def read_list_data_from_csv(filename: Path) -> List[Dict[str, Any]]:
+    with open(filename) as f:
+        reader = csv.DictReader(f, delimiter=",", quotechar='"')
+        data = [row for row in reader]
+    return data
