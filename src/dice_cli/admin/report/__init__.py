@@ -5,9 +5,15 @@ import typer
 from dice_lib.date import current_formatted_date
 from tabulate import tabulate
 
-from dice_cli._io import write_list_data_to_csv
+from dice_cli._io import (
+    read_list_data_from_csv,
+    write_list_data_as_dict_to_csv,
+    write_list_data_to_csv,
+)
 from dice_cli.logger import admin_logger
 
+from ._inventory import COLUMNS as INVENTORY_COLUMNS
+from ._inventory import _inventory_from_network_report
 from ._storage import generate_storage_report
 
 app = typer.Typer(help="Commands for report creation")
@@ -103,4 +109,44 @@ def network(
     from ._network import _scan_network
 
     all_hosts = _scan_network(ip_network)
+    hosts_without_dns = [host for host in all_hosts if host["fqdn"] == "N/A"]
     admin_logger.info(f"Found {len(all_hosts)} hosts")
+    admin_logger.info(f"Found {len(hosts_without_dns)} hosts without DNS")
+    for host in hosts_without_dns:
+        admin_logger.warning(f"{host} is active but has no DNS")
+    if output_file:
+        write_list_data_as_dict_to_csv(
+            all_hosts,
+            ["fqdn", "ipv4", "status"],
+            output_file,
+        )
+        admin_logger.info(f"Report saved to {output_file}")
+
+
+@app.command()
+def inventory(
+    network_report_file: Path = typer.Argument(...),
+    output_file: Optional[Path] = typer.Option(
+        None,
+        "-o",
+        "--output",
+        help="Output file",
+    ),
+    print_to_console: bool = typer.Option(
+        False, "--print", help="Print to console instead of output file"
+    ),
+    remote_user: str = typer.Option("root", "--remote-user", help="Remote user"),
+) -> None:
+    """Generate full inventory report based on network report"""
+    if not output_file and not print_to_console:
+        today = current_formatted_date()
+        output_file = Path(f"/tmp/{today}_dice_admin_inventory_report.csv")
+
+    network_report = read_list_data_from_csv(network_report_file)
+    active_hosts = [host for host in network_report if host["status"] == "UP"]
+    inventory_report = list(_inventory_from_network_report(active_hosts, remote_user))
+    if not print_to_console:
+        write_list_data_as_dict_to_csv(
+            inventory_report, INVENTORY_COLUMNS, cast(Path, output_file)
+        )
+        admin_logger.info(f"Report saved to {output_file}")

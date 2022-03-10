@@ -1,6 +1,6 @@
 import ipaddress
 from enum import Enum
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, Generator, List, Optional, Union
 
 from dice_cli.cache import admin_cache
 from dice_cli.logger import admin_logger
@@ -81,6 +81,19 @@ def _get_all_active_ips(ip_network: str) -> List[Dict[str, str]]:
     return result
 
 
+def _cleanup_hosts(
+    hosts: List[Dict[str, str]]
+) -> Generator[Dict[str, str], None, None]:
+    for host in hosts:
+        if host["fqdn"] is None:
+            continue
+        if host["ipv4"].endswith(".250"):
+            continue
+        if host["fqdn"].endswith("."):
+            host["fqdn"] = host["fqdn"][:-1]
+        yield host
+
+
 def _scan_network(ip_network: str) -> List[Dict[str, Any]]:
     # get all IP addresses in the network
     # check DNS entries for all IP addresses
@@ -103,5 +116,8 @@ def _scan_network(ip_network: str) -> List[Dict[str, Any]]:
         host["fqdn"] = "N/A"
         host["status"] = HostState.UP.name
     dns_hosts.extend(active_ips_without_dns)
+
+    # cleanup
+    dns_hosts = [host for host in _cleanup_hosts(dns_hosts)]
 
     return dns_hosts
