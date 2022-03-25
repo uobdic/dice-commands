@@ -5,7 +5,7 @@ import dice_lib.parameters as dice_params
 import rich
 import typer
 
-from . import __version__, admin, benchmark, docs, info, job
+from . import __version__, admin, benchmark, check, docs, info, job
 from .logger import admin_logger, console_handler, user_logger
 
 
@@ -40,6 +40,7 @@ def admin_callback(
 app = typer.Typer()
 app.add_typer(admin.app, name="admin", callback=admin_callback)
 app.add_typer(benchmark.app, name="benchmark", callback=user_callback)
+app.add_typer(check.app, name="check", callback=user_callback)
 app.add_typer(docs.app, name="docs", callback=user_callback)
 app.add_typer(info.app, name="info", callback=user_callback)
 app.add_typer(job.app, name="job", callback=user_callback)
