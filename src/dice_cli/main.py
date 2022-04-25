@@ -5,7 +5,7 @@ import dice_lib.parameters as dice_params
 import rich
 import typer
 
-from . import __version__, admin, benchmark, check, docs, info, job
+from . import __version__, _date, admin, benchmark, check, docs, info, job
 from .logger import admin_logger, console_handler, user_logger
 
 
@@ -76,6 +76,22 @@ def glossary(
         return
 
     rich.print(f"[blue]{word}[/]: [magenta]{dice_params.GLOSSARY[word]}[/]")
+
+
+@app.command()
+def date(
+    date_format: _date.DateOptions = typer.Option(
+        _date.DateOptions.ISO8601_JUST_Y_M_D,
+        "--format",
+        "-f",
+        help="Format to print",
+        case_sensitive=False,
+    )
+) -> None:
+    """
+    Print the current date in ISO8601 format
+    """
+    rich.print(_date.formatted_date(date_format))
 
 
 def main() -> Any:
