@@ -116,3 +116,4 @@ known_third_party = ["typer", "click"]
 
 [project.scripts]
 dice = "dice_cli.main:main"
+dicectl = "dice_cli.dicectl:main"
