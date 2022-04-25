@@ -79,5 +79,16 @@ def date(
     rich.print(_date.formatted_date(date_format))
 
 
+@app.command()
+def contribute() -> None:
+    """
+    Contribute to DICE
+    """
+    rich.print("[blue]Contribute[/]:")
+    rich.print("[blue]  DICE CLI[/]: [red]https://github.com/uobdic/dice-cli[/]")
+    rich.print("[blue]  DICE LIB[/]: [red]https://github.com/uobdic/dice-lib[/]")
+    rich.print("[blue]  DICE WIKI[/]: [red]https://wikis.bris.ac.uk/display/dic[/]")
+
+
 def main() -> Any:
     return app()
