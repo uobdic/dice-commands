@@ -4,11 +4,13 @@ from . import (
     _print_unused_id_ranges,
     _print_used_id_ranges,
     _scan_groups_and_users,
+    deploy,
     report,
 )
 
 app = typer.Typer(help="DICE admin commands")
 app.add_typer(report.app, name="report")
+app.add_typer(deploy.app, name="deploy")
 
 
 @app.command()
