@@ -1,7 +1,6 @@
 import logging
 from typing import Any, Optional
 
-import dice_lib.parameters as dice_params
 import rich
 import typer
 
@@ -49,18 +48,25 @@ def glossary(
     """
     Show the meaning of a given word (in DICE context)
     """
+    from dice_lib import GLOSSARY
+
     if print_all:
-        rich.print("[blue]All items[/]:")
-        for w, meaning in dice_params.GLOSSARY.items():
-            rich.print(f"[blue]{w}[/]: [magenta]{meaning}[/]")
+        from prettytable import PrettyTable
+
+        x = PrettyTable()
+        x.field_names = ["Word", "Meaning"]
+        for word, meaning in GLOSSARY.items():
+            x.add_row([word, meaning])
+        x.align = "l"
+        rich.print(x)
         return
 
-    if word not in dice_params.GLOSSARY:
+    if word not in GLOSSARY:
         rich.print(f"[red]Word '{word}' not found[/]")
         typer.echo("To list all glossary items use 'dice glossary -a'")
         return
 
-    rich.print(f"[blue]{word}[/]: [magenta]{dice_params.GLOSSARY[word]}[/]")
+    rich.print(f"[blue]{word}[/]: [magenta]{GLOSSARY[word]}[/]")
 
 
 @app.command()
