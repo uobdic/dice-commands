@@ -142,3 +142,5 @@ src/*/_version.py
 
 # Virtual Studio Code
 .vscode/*
+
+*.csv
