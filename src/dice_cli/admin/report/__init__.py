@@ -150,3 +150,40 @@ def inventory(
             inventory_report, INVENTORY_COLUMNS, cast(Path, output_file)
         )
         admin_logger.info(f"Report saved to {output_file}")
+
+
+@app.command()
+def dns(
+    hosts: List[str] = typer.Argument(...),
+    output_file: Optional[Path] = typer.Option(
+        None,
+        "-o",
+        "--output",
+        help="Output file",
+    ),
+    print_to_console: bool = typer.Option(
+        False, "--print", help="Print to console instead of output file"
+    ),
+) -> None:
+    """
+    Generate a report of the DNS records for the given hosts.
+
+    :param hosts: The hosts to generate the report for.
+    :param output_directory: The directory to write the report to.
+    """
+    if not output_file and not print_to_console:
+        today = current_formatted_date()
+        output_file = Path(f"/tmp/{today}_dice_admin_dns_report.csv")
+
+    admin_logger.warning(":construction: Work in progress :construction:")
+    from ._dns import _dns_report
+
+    headers, dns_report = _dns_report(hosts)
+    if not print_to_console:
+        write_list_data_to_csv(dns_report, headers, cast(Path, output_file))
+        admin_logger.info(f"Report saved to {output_file}")
+    else:
+        admin_logger.info(
+            tabulate(dns_report, headers=headers, tablefmt="github"),
+            extra={"markup": False},
+        )
