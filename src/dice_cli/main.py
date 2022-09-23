@@ -1,4 +1,5 @@
 import logging
+import os
 from typing import Any, Optional
 
 import rich
@@ -94,6 +95,50 @@ def contribute() -> None:
     rich.print("[blue]  DICE CLI[/]: [red]https://github.com/uobdic/dice-cli[/]")
     rich.print("[blue]  DICE LIB[/]: [red]https://github.com/uobdic/dice-lib[/]")
     rich.print("[blue]  DICE WIKI[/]: [red]https://wikis.bris.ac.uk/display/dic[/]")
+
+
+def __create_dir(path: str) -> None:
+    """Create a directory if it does not exist"""
+    if os.path.exists(path):
+        user_logger.warning(f"Directory '{path}' already exists - skipping")
+        return
+    user_logger.info(f"Creating directory '{path}'")
+    try:
+        os.makedirs(path)
+    except Exception as e:
+        user_logger.error(f"Unable to create directory '{path}': {e}")
+        raise typer.Exit(1) from e
+
+
+@app.command()
+def setmeup() -> None:
+    """
+    Command to set you up across all DICE systems
+    """
+    from dice_lib.user import current_user
+
+    # create /storage/<username> directory
+    # create /scratch/<username> directory
+    # create /shared/<username> directory
+    # create /software/<username> directory
+    # check if hdfs://<username> exists --> if not, print instructions to create it
+    username = current_user()
+    local_paths = ["/storage", "/scratch", "/shared", "/software"]
+    dirs_to_create = [
+        os.path.join(path, username) for path in local_paths if os.path.exists(path)
+    ]
+    user_logger.info("Will create the following directories:")
+    for path in dirs_to_create:
+        user_logger.info(f"  {path}")
+    user_logger.info(
+        "For more information on the paths, please check the wiki for the current node you are on."
+    )
+
+    typer.confirm("Do you want to continue?", abort=True)
+
+    for path in local_paths:
+        if os.path.exists(path):
+            __create_dir(f"{path}/{username}")
 
 
 def main() -> Any:
