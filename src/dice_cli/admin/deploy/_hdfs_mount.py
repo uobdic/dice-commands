@@ -1,8 +1,8 @@
 from dataclasses import dataclass
 from typing import List, Tuple
 
+from dice_lib import load_config
 from dice_lib.host import HostCommand
-from dice_lib.parameters import load_parameters
 
 FSTAB_PATH: str = "/etc/fstab"
 
@@ -20,8 +20,8 @@ class InstallConfig:
 
 
 def _read_dice_config() -> InstallConfig:
-    params = load_parameters()
-    hdfs_info = params.storage.hdfs
+    config = load_config()
+    hdfs_info = config.storage.hdfs
     install = hdfs_info.extras.INSTALL_INSTRUCTIONS
     return InstallConfig(
         url=install.HADOOP_TARBALL_URL,
