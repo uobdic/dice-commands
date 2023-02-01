@@ -1,10 +1,11 @@
 from typing import Dict, List
 
 import typer
-from dice_lib import parameters as dice_params
+from dice_lib import load_config
 
 from ..logger import user_logger
 
+dice_params = load_config()
 app = typer.Typer(help="DICE info commands")
 
 

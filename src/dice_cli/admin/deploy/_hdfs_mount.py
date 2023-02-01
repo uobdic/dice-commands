@@ -80,7 +80,7 @@ def get_setup_commands() -> List[HostCommand]:
         HostCommand("ln", parameters=["-s", *link]) for link in config.symlinks
     ]
 
-    fstab_entry = f'"{config.fstab_entry}"'
+    fstab_entry = f"{config.fstab_entry!r}"
     make_mount_point = HostCommand("mkdir", parameters=["-p", config.mount_point])
     make_fstab_entry = HostCommand("echo", parameters=[fstab_entry, ">>", FSTAB_PATH])
     mount_hdfs = HostCommand("mount", parameters=[config.mount_point])

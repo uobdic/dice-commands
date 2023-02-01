@@ -37,7 +37,7 @@ def formatted_date(
     try:
         date_format = OPTION_TO_FORMAT[date_format_option]
     except KeyError:
-        msg = f"Invalid date format option '{date_format_option}'"
+        msg = f"Invalid date format option {date_format_option!r}"
         msg += f"\nValid options are: {', '.join(OPTION_TO_FORMAT.keys())}"
         raise ValueError(msg) from None
     return datetime.datetime.utcnow().strftime(date_format.value)
