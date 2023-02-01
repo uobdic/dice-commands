@@ -63,7 +63,7 @@ def glossary(
         return
 
     if word not in GLOSSARY:
-        rich.print(f"[red]Word '{word}' not found[/]")
+        rich.print(f"[red]Word {word!r} not found[/]")
         typer.echo("To list all glossary items use 'dice glossary -a'")
         return
 
@@ -100,13 +100,13 @@ def contribute() -> None:
 def __create_dir(path: str) -> None:
     """Create a directory if it does not exist"""
     if os.path.exists(path):
-        user_logger.warning(f"Directory '{path}' already exists - skipping")
+        user_logger.warning(f"Directory {path!r} already exists - skipping")
         return
-    user_logger.info(f"Creating directory '{path}'")
+    user_logger.info(f"Creating directory {path!r}")
     try:
         os.makedirs(path)
     except Exception as e:
-        user_logger.error(f"Unable to create directory '{path}': {e}")
+        user_logger.error(f"Unable to create directory {path!r}: {e}")
         raise typer.Exit(1) from e
 
 
