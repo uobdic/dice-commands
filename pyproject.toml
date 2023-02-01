@@ -116,4 +116,5 @@ known_third_party = ["typer", "click"]
 [project.scripts]
 dice = "dice_cli.main:main"
 dicectl = "dice_cli.dicectl:main"
+dice-adm = "dice_cli.dicectl:main"
 # dicefs = "dice_cli.dicefs:main" # once `dice fs` is mature enough
