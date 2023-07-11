@@ -5,12 +5,14 @@ from . import (
     _print_used_id_ranges,
     _scan_groups_and_users,
     deploy,
+    investigate,
     report,
 )
 
 app = typer.Typer(help="DICE admin commands")
-app.add_typer(report.app, name="report")
 app.add_typer(deploy.app, name="deploy")
+app.add_typer(investigate.app, name="investigate")
+app.add_typer(report.app, name="report")
 
 
 @app.command()
