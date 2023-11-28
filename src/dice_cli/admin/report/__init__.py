@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List, Optional, cast
 
+import pandas as pd
 import typer
 from dice_lib.date import current_formatted_date
 from tabulate import tabulate
@@ -38,12 +39,13 @@ def storage(
     print_to_console: bool = typer.Option(
         False, "--print", help="Print to console instead of output file"
     ),
+    no_summary: bool = typer.Option(False, "--no-summary", help="Do not print summary"),
 ) -> None:
     """
     Generate a report of the storage usage of the given paths.
 
     :param paths: The paths to generate the report for.
-    :param output_directory: The directory to write the report to.
+    :param output_file: The file to write the report to.
     :param resolve_usernames: Whether to resolve usernames to their real names.
     """
     if not output_file and not print_to_console:
@@ -57,8 +59,18 @@ def storage(
     else:
         admin_logger.info(tabulate(report, headers=headers, tablefmt="psql"))
 
-    headers, report = generate_storage_report(paths, resolve_usernames)
-    write_list_data_to_csv(report, headers, cast(Path, output_file))
+    if no_summary:
+        # Produce summary for the top 5 users
+        # sort by "Size [B]" descending
+        df = pd.DataFrame(report, columns=headers)
+        df["Size [B]"] = df["Size [B]"].astype(int)
+        df = df.sort_values(by=["Size [B]"], ascending=False)
+        df["Size [human-readable]"] = df["Size [human-readable]"].astype(str)
+
+        admin_logger.info("Summary for top 5 users:")
+        admin_logger.info(
+            tabulate(df.head(5), headers=headers, tablefmt="psql", showindex=False)
+        )
 
 
 @app.command()
