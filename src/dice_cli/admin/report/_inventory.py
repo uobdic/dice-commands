@@ -36,6 +36,7 @@ COLUMNS = [
 def _get_host_info(ipv4_address: str, user: str) -> Dict[str, str]:
     admin_logger.debug(f"Getting host info for {ipv4_address}")
     # TODO: find a way to do all below as a single command
+    # NOTE: this is a good candidate for the DICE API service
     with SshMachine(ipv4_address, user=user, keyfile=None) as rem:
         puppet_agent = rem["puppet"]["agent"]
         facter = rem["facter"]

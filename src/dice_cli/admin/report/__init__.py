@@ -60,6 +60,7 @@ def storage(
         admin_logger.info(tabulate(report, headers=headers, tablefmt="psql"))
 
     if no_summary:
+        # TODO: move functionality to separate function
         # Produce summary for the top 5 users
         # sort by "Size [B]" descending
         df = pd.DataFrame(report, columns=headers)
@@ -197,5 +198,53 @@ def dns(
     else:
         admin_logger.info(
             tabulate(dns_report, headers=headers, tablefmt="github"),
+            extra={"markup": False},
+        )
+
+
+@app.command()
+def resources(
+    host_inventory_file: Path = typer.Argument(...),
+    output_file: Optional[Path] = typer.Option(
+        None,
+        "-o",
+        "--output",
+        help="Output file",
+    ),
+    print_to_console: bool = typer.Option(
+        False, "--print", help="Print to console instead of output file"
+    ),
+    group: str = typer.Option(
+        "htcondor_workers",
+        "--group",
+        help="Group of hosts to generate report for",
+    ),
+) -> None:
+    """
+    Generate a report of the resources of the given hosts.
+    """
+    if not output_file and not print_to_console:
+        today = current_formatted_date()
+        output_file = Path(f"/tmp/{today}_dice_admin_resources_report.csv")
+
+    admin_logger.warning(":construction: Work in progress :construction:")
+    from ._resources import _resources_report
+
+    # the inventory file is a csv file with columns defined in _inventory.py
+    # we are only interested in the FQDN column for "Description/Purpose"==group
+    df = pd.read_csv(host_inventory_file)
+    if group == "all":
+        hosts = df["FQDN"].tolist()
+    else:
+        htcondor_workers = df[df["Description/Purpose"] == group]
+    hosts = htcondor_workers["FQDN"].tolist()
+
+    headers, resources_report = _resources_report(hosts)
+    if not print_to_console:
+        write_list_data_to_csv(resources_report, headers, cast(Path, output_file))
+        admin_logger.info(f"Report saved to {output_file}")
+    else:
+        admin_logger.info(
+            tabulate(resources_report, headers=headers, tablefmt="github"),
             extra={"markup": False},
         )
